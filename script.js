@@ -1,20 +1,32 @@
+document.addEventListener("DOMContentLoaded", () => {
+
 let questions = [];
 let current = 0;
 let correct = 0;
 let wrong = 0;
 let skipped = 0;
 
-function startPrepare() {
+const startBtn = document.getElementById("startBtn");
+const skipBtn = document.getElementById("skipBtn");
+const restartBtn = document.getElementById("restartBtn");
+const exitBtn = document.getElementById("exitBtn");
+
+startBtn.onclick = () => {
   const file = document.getElementById("fileInput").files[0];
-  if (!file) return alert("Fayl tanlanmadi");
+  if (!file) {
+    alert("DOCX fayl tanlang");
+    return;
+  }
 
   mammoth.extractRawText({ arrayBuffer: file })
-    .then(res => parseText(res.value));
-}
+    .then(res => parseText(res.value))
+    .catch(() => alert("DOCX o‘qilmadi"));
+};
 
 function parseText(text) {
   const lines = text.split("\n");
   let q = null;
+  questions = [];
 
   lines.forEach(line => {
     line = line.trim();
@@ -35,24 +47,26 @@ function parseText(text) {
 
   document.getElementById("home").style.display = "none";
   document.getElementById("test").style.display = "block";
+
   showQuestion();
 }
 
 function showQuestion() {
-  if (current >= questions.length) return finishTest();
+  if (current >= questions.length) {
+    finishTest();
+    return;
+  }
 
   const q = questions[current];
   document.getElementById("question").innerText = q.question;
-
   const box = document.getElementById("answers");
   box.innerHTML = "";
 
-  q.answers.forEach(a => {
+  q.answers.forEach(ans => {
     const btn = document.createElement("button");
-    btn.className = "answer";
-    btn.innerText = a;
+    btn.textContent = ans;
     btn.onclick = () => {
-      if (a === q.correct) correct++;
+      if (ans === q.correct) correct++;
       else wrong++;
       current++;
       showQuestion();
@@ -61,11 +75,11 @@ function showQuestion() {
   });
 }
 
-function nextQuestion() {
+skipBtn.onclick = () => {
   skipped++;
   current++;
   showQuestion();
-}
+};
 
 function finishTest() {
   document.getElementById("test").style.display = "none";
@@ -74,10 +88,7 @@ function finishTest() {
     `To‘g‘ri: ${correct}, Noto‘g‘ri: ${wrong}, Tashlab ketilgan: ${skipped}`;
 }
 
-function restart() {
-  location.reload();
-}
+restartBtn.onclick = () => location.reload();
+exitBtn.onclick = () => location.reload();
 
-function exitTest() {
-  location.reload();
-}
+});
