@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+ <!DOCTYPE html>
 <html lang="uz">
 <head>
   <meta charset="UTF-8">
@@ -7,26 +7,29 @@
 </head>
 <body>
 
+<h2>DOCX test tizimi</h2>
+
 <div id="home">
-  <h2>DOCX test yuklash</h2>
   <input type="file" id="fileInput" accept=".docx">
-  <button onclick="startPrepare()">Testni boshlash</button>
+  <button id="startBtn">Testni boshlash</button>
 </div>
 
 <div id="test" style="display:none;">
   <h3 id="question"></h3>
   <div id="answers"></div>
-  <button onclick="nextQuestion()">Keyingi</button>
+  <button id="skipBtn">Keyingi</button>
 </div>
 
 <div id="result" style="display:none;">
-  <h2>Natija</h2>
+  <h3>Natija</h3>
   <p id="stats"></p>
-  <button onclick="restart()">Qayta ishlash</button>
-  <button onclick="exitTest()">Chiqish</button>
+  <button id="restartBtn">Qayta ishlash</button>
+  <button id="exitBtn">Chiqish</button>
 </div>
 
+<!-- MUHIM: mammoth birinchi -->
 <script src="https://cdn.jsdelivr.net/npm/mammoth/mammoth.browser.min.js"></script>
 <script src="script.js"></script>
+
 </body>
 </html>
